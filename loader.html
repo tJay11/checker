@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Dog Running Loader</title>
+		<style>
+			:root {
+				--loader-size: 150px;
+				--fazer-size: calc(var(--loader-size) / 15);
+				--animation-speed: 0.6s;
+				--phaser-color-primary: #1d6bab;
+				--height-of-loader: 4px;
+			}
+
+			body {
+				margin: 0;
+				padding: 0;
+				min-height: 100vh;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				background: #f5f5f5;
+				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+					Oxygen, Ubuntu, sans-serif;
+			}
+
+			.loader-container {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 20px;
+				position: relative;
+				z-index: 10;
+				isolation: isolate;
+				/* border: 2px solid #ddd; */
+			}
+
+			.dog-loader {
+				width: var(--loader-size);
+				position: relative;
+				border-radius: calc(var(--loader-size) * 0.2);
+				overflow: hidden;
+
+				& img {
+					width: 100%;
+				}
+
+				&::before {
+					content: "";
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					width: 90%;
+					height: 5px;
+					border-radius: 100%;
+					background: linear-gradient(
+						to right,
+						rgb(135, 135, 135),
+						rgb(233, 233, 233)
+					);
+					filter: blur(4px);
+				}
+			}
+
+			.loading-text {
+				font-size: 18px;
+				font-weight: 500;
+				color: #333;
+				animation: pulse 1.5s ease-in-out infinite;
+			}
+
+			@keyframes pulse {
+				0%,
+				100% {
+					opacity: 1;
+				}
+				50% {
+					opacity: 0.5;
+				}
+			}
+
+			.dots {
+				display: inline-block;
+				width: 20px;
+			}
+
+			.dots::after {
+				content: "";
+				animation: dots 1.5s steps(4) infinite;
+			}
+
+			@keyframes dots {
+				0% {
+					content: "";
+				}
+				25% {
+					content: ".";
+				}
+				50% {
+					content: "..";
+				}
+				75% {
+					content: "...";
+				}
+				100% {
+					content: "";
+				}
+			}
+
+			/* Phaser Beam Animation */
+			.phaser-beam {
+				position: absolute;
+				top: 10%;
+				right: -150px;
+				width: 30px;
+				height: 1px;
+				background: var(--phaser-color-primary);
+				opacity: 0.6;
+
+				animation: phaserScan 0.5s linear infinite;
+				z-index: -1;
+				pointer-events: none;
+
+				&::before {
+					content: "";
+					position: absolute;
+					top: 40px;
+					left: 0;
+					width: 140%;
+					height: 1px;
+					background: var(--phaser-color-secondary);
+					animation: phaserScan 0.5s linear infinite 5s;
+				}
+			}
+
+			@keyframes phaserScan {
+				0% {
+					right: -150px;
+				}
+				100% {
+					right: 100%;
+				}
+			}
+
+			.dog-loader > span {
+				position: absolute;
+				bottom: 20%;
+				left: 30%;
+				transform: translate(-50%, -50%);
+				opacity: 0.3;
+			}
+
+			.dog-loader > span > span:nth-child(1),
+			.dog-loader > span > span:nth-child(2),
+			.dog-loader > span > span:nth-child(3),
+			.dog-loader > span > span:nth-child(4) {
+				width: var(--fazer-size);
+				height: var(--fazer-size);
+				border-radius: 100%;
+				background: #000;
+				position: absolute;
+				animation: fazer1 0.2s linear infinite;
+			}
+			.dog-loader > span > span:nth-child(2) {
+				top: 3px;
+				animation: fazer2 0.4s linear infinite;
+			}
+			.dog-loader > span > span:nth-child(3) {
+				top: 1px;
+				animation: fazer3 0.4s linear infinite;
+				animation-delay: -1s;
+			}
+			.dog-loader > span > span:nth-child(4) {
+				top: 4px;
+				animation: fazer4 1s linear infinite;
+				animation-delay: -1s;
+			}
+			@keyframes fazer1 {
+				0% {
+					left: 0;
+				}
+				100% {
+					left: -80px;
+					opacity: 0;
+				}
+			}
+			@keyframes fazer2 {
+				0% {
+					left: 0;
+				}
+				100% {
+					left: -100px;
+					opacity: 0;
+				}
+			}
+			@keyframes fazer3 {
+				0% {
+					left: 0;
+				}
+				100% {
+					left: -50px;
+					opacity: 0;
+				}
+			}
+			@keyframes fazer4 {
+				0% {
+					left: 0;
+				}
+				100% {
+					left: -150px;
+					opacity: 0;
+				}
+			}
+
+			/* Long Fazers */
+
+			.longfazers {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+			}
+			.longfazers span {
+				position: absolute;
+				height: 2px;
+				width: 20%;
+			}
+			.longfazers span:nth-child(1) {
+				top: 20%;
+				animation: lf 0.6s linear infinite;
+				animation-delay: -5s;
+				background: #818181;
+			}
+			.longfazers span:nth-child(2) {
+				top: 40%;
+				animation: lf2 0.8s linear infinite;
+				animation-delay: -1s;
+				background: #000;
+			}
+			.longfazers span:nth-child(3) {
+				top: 60%;
+				animation: lf3 0.6s linear infinite;
+				background: #353535;
+			}
+			.longfazers span:nth-child(4) {
+				top: 80%;
+				animation: lf4 0.5s linear infinite;
+				animation-delay: -3s;
+				background: #2a2a2a;
+			}
+			@keyframes lf {
+				0% {
+					left: 200%;
+				}
+				100% {
+					left: -200%;
+					opacity: 0;
+				}
+			}
+			@keyframes lf2 {
+				0% {
+					left: 200%;
+				}
+				100% {
+					left: -200%;
+					opacity: 0;
+				}
+			}
+			@keyframes lf3 {
+				0% {
+					left: 200%;
+				}
+				100% {
+					left: -100%;
+					opacity: 0;
+				}
+			}
+			@keyframes lf4 {
+				0% {
+					left: 200%;
+				}
+				100% {
+					left: -100%;
+					opacity: 0;
+				}
+			}
+
+			/* Bottom Loader */
+			.loader {
+				display: block;
+
+				width: 90%;
+				height: var(--height-of-loader);
+				border-radius: 30px;
+				background-color: rgba(0, 0, 0, 0.2);
+				position: relative;
+			}
+
+			.loader::before {
+				content: "";
+				position: absolute;
+				background: var(--phaser-color-primary);
+				top: 0;
+				left: 0;
+				width: 0%;
+				height: 100%;
+				border-radius: 30px;
+				animation: moving 1s ease-in-out infinite;
+			}
+
+			@keyframes moving {
+				50% {
+					width: 100%;
+				}
+
+				100% {
+					width: 0;
+					right: 0;
+					left: unset;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="loader-container">
+			<div class="dog-loader">
+				<span><span></span><span></span><span></span><span></span></span>
+				<img src="/checker.gif" alt="" />
+
+				<div class="longfazers">
+					<span></span><span></span><span></span><span></span>
+				</div>
+			</div>
+			<!-- <div class="loading-text">Loading<span class="dots"></span></div> -->
+			<div class="loader"></div>
+		</div>
+	</body>
+</html>
