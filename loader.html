@@ -6,11 +6,11 @@
 		<title>Dog Running Loader</title>
 		<style>
 			:root {
-				--loader-size: 150px;
+				--loader-size: 150px; /* You can change the size here */
 				--fazer-size: calc(var(--loader-size) / 15);
 				--animation-speed: 0.6s;
 				--phaser-color-primary: #1d6bab;
-				--height-of-loader: 4px;
+				--height-of-loader: calc(var(--loader-size) / 37.5);
 			}
 
 			body {
@@ -52,14 +52,14 @@
 					bottom: 0;
 					left: 0;
 					width: 90%;
-					height: 5px;
+					height: calc(var(--loader-size) / 30);
 					border-radius: 100%;
 					background: linear-gradient(
 						to right,
 						rgb(209, 209, 209),
 						rgb(131, 131, 131)
 					);
-					filter: blur(4px);
+					filter: blur(calc(var(--loader-size) / 37.5));
 				}
 			}
 
@@ -67,9 +67,9 @@
 			.phaser-beam {
 				position: absolute;
 				top: 10%;
-				right: -150px;
-				width: 30px;
-				height: 1px;
+				right: calc(var(--loader-size) * -1);
+				width: calc(var(--loader-size) / 5);
+				height: calc(var(--loader-size) / 150);
 				background: var(--phaser-color-primary);
 				opacity: 0.6;
 
@@ -80,10 +80,10 @@
 				&::before {
 					content: "";
 					position: absolute;
-					top: 40px;
+					top: calc(var(--loader-size) * 4 / 15);
 					left: 0;
 					width: 140%;
-					height: 1px;
+					height: calc(var(--loader-size) / 150);
 					background: var(--phaser-color-secondary);
 					animation: phaserScan 0.5s linear infinite 5s;
 				}
@@ -91,7 +91,7 @@
 
 			@keyframes phaserScan {
 				0% {
-					right: -150px;
+					right: calc(var(--loader-size) * -1);
 				}
 				100% {
 					right: 100%;
@@ -118,16 +118,16 @@
 				animation: fazer1 0.2s linear infinite;
 			}
 			.dog-loader > span > span:nth-child(2) {
-				top: 3px;
+				top: calc(var(--loader-size) / 50);
 				animation: fazer2 0.4s linear infinite;
 			}
 			.dog-loader > span > span:nth-child(3) {
-				top: 1px;
+				top: calc(var(--loader-size) / 150);
 				animation: fazer3 0.4s linear infinite;
 				animation-delay: -1s;
 			}
 			.dog-loader > span > span:nth-child(4) {
-				top: 4px;
+				top: calc(var(--loader-size) * 2 / 75);
 				animation: fazer4 1s linear infinite;
 				animation-delay: -1s;
 			}
@@ -136,7 +136,7 @@
 					left: 0;
 				}
 				100% {
-					left: -80px;
+					left: calc(var(--loader-size) * -8 / 15);
 					opacity: 0;
 				}
 			}
@@ -145,7 +145,7 @@
 					left: 0;
 				}
 				100% {
-					left: -100px;
+					left: calc(var(--loader-size) * -2 / 3);
 					opacity: 0;
 				}
 			}
@@ -154,7 +154,7 @@
 					left: 0;
 				}
 				100% {
-					left: -50px;
+					left: calc(var(--loader-size) / -3);
 					opacity: 0;
 				}
 			}
@@ -163,7 +163,7 @@
 					left: 0;
 				}
 				100% {
-					left: -150px;
+					left: calc(var(--loader-size) * -1);
 					opacity: 0;
 				}
 			}
@@ -178,7 +178,7 @@
 			}
 			.longfazers span {
 				position: absolute;
-				height: 2px;
+				height: calc(var(--loader-size) / 75);
 				width: 20%;
 			}
 			.longfazers span:nth-child(1) {
@@ -247,7 +247,7 @@
 
 				width: 90%;
 				height: var(--height-of-loader);
-				border-radius: 30px;
+				border-radius: calc(var(--loader-size) / 5);
 				background-color: rgba(0, 0, 0, 0.2);
 				position: relative;
 			}
@@ -260,7 +260,7 @@
 				left: 0;
 				width: 0%;
 				height: 100%;
-				border-radius: 30px;
+				border-radius: calc(var(--loader-size) / 5);
 				animation: moving 1s ease-in-out infinite;
 			}
 
